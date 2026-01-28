@@ -1,0 +1,21 @@
+{
+  "if": {
+    "anyOf": [
+      {
+        "field": "tags.Environment",
+        "exists": "false"
+      },
+      {
+        "field": "tags.Owner",
+        "exists": "false"
+      },
+      {
+        "field": "tags.Application",
+        "exists": "false"
+      }
+    ]
+  },
+  "then": {
+    "effect": "deny"
+  }
+}

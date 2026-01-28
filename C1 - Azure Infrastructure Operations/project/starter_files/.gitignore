@@ -1,0 +1,8 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.plan
+solution.plan
+.DS_Store
+.DS_Store?

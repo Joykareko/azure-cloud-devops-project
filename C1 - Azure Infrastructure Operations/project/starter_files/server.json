@@ -1,0 +1,35 @@
+{
+  "builders": [
+    {
+      "type": "azure-arm",
+      "use_azure_cli_auth": true,
+
+      "subscription_id": "fbf787c1-ed83-44ad-946e-6ff3b027c400",
+
+      "build_resource_group_name": "Azuredevops",
+      "managed_image_resource_group_name": "Azuredevops",
+      "managed_image_name": "ubuntu-web-image",
+
+      "vm_size": "Standard_B1s",
+
+      "os_type": "Linux",
+
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "18.04-LTS",
+
+      "ssh_username": "azureuser"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get update",
+        "sudo apt-get install -y nginx",
+        "sudo systemctl enable nginx"
+      ]
+    }
+  ]
+}
