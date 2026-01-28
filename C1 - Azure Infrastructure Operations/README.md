@@ -66,7 +66,12 @@ Sample output:
 ]
 ```
 
-📸 A screenshot of this output is included in the repository as required.
+📸 A screenshot of this output is included below and in the repository as required.
+<img width="935" height="392" alt="Screenshot 2026-01-26 195141" src="https://github.com/user-attachments/assets/0e730435-388c-41a8-a62e-8636489e04a9" />
+
+<img width="1095" height="516" alt="Screenshot 2026-01-27 002735" src="https://github.com/user-attachments/assets/0ec34968-f580-473d-985c-a744e85399f4" />
+
+
 
 ---
 
@@ -96,6 +101,11 @@ The image is created as a **Managed Image** in Azure:
 ManagedImageName: ubuntu-web-image
 ManagedImageResourceGroupName: Azuredevops
 ```
+### Screenshots on validating and building successfully.
+
+<img width="1730" height="93" alt="Screenshot 2026-01-27 162027" src="https://github.com/user-attachments/assets/319f64af-2131-424f-923d-5ccf8a0dd1a7" />
+
+<img width="1870" height="417" alt="Screenshot 2026-01-27 165812" src="https://github.com/user-attachments/assets/d8eaf155-50be-43f2-8580-bc1d8a657ff9" />
 
 ---
 
@@ -178,8 +188,11 @@ To destroy all deployed infrastructure:
 ```bash
 terraform destroy
 ```
-
+## Screenshots showing some of the infrastructure deployed
 ---
+<img width="1855" height="779" alt="Screenshot 2026-01-27 172438" src="https://github.com/user-attachments/assets/fb69b9d4-d732-4499-af67-603027ad0ad5" />
+
+<img width="1884" height="856" alt="Screenshot 2026-01-27 172107" src="https://github.com/user-attachments/assets/891190dc-d422-4ab4-b516-076dd9742ba4" />
 
 ## ✅ Summary
 
