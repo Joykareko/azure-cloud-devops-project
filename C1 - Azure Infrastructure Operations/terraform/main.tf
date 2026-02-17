@@ -41,6 +41,67 @@ resource "azurerm_subnet" "subnet" {
 }
 
 # ---------------------------
+# Network Security Group
+# ---------------------------
+resource "azurerm_network_security_group" "web_nsg" {
+  name                = "web-nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  tags                = var.tags
+}
+
+# Deny inbound from Internet
+resource "azurerm_network_security_rule" "deny_internet_inbound" {
+  name                        = "DenyInternetInbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "Internet"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.web_nsg.name
+}
+
+# Allow inbound within VNet
+resource "azurerm_network_security_rule" "allow_vnet_inbound" {
+  name                        = "AllowVNetInbound"
+  priority                    = 200
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "VirtualNetwork"
+  destination_address_prefix  = "VirtualNetwork"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.web_nsg.name
+}
+
+# Allow HTTP from Load Balancer
+resource "azurerm_network_security_rule" "allow_lb_http" {
+  name                        = "AllowLoadBalancerHTTP"
+  priority                    = 300
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "AzureLoadBalancer"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.web_nsg.name
+}
+
+# Associate NSG with Subnet
+resource "azurerm_subnet_network_security_group_association" "subnet_assoc" {
+  subnet_id                 = azurerm_subnet.subnet.id
+  network_security_group_id = azurerm_network_security_group.web_nsg.id
+}
+
+# ---------------------------
 # Load Balancer
 # ---------------------------
 resource "azurerm_public_ip" "lb_public_ip" {
@@ -67,16 +128,16 @@ resource "azurerm_lb" "lb" {
 }
 
 resource "azurerm_lb_backend_address_pool" "bepool" {
-  name                = "backend-pool"
-  loadbalancer_id     = azurerm_lb.lb.id
+  name            = "backend-pool"
+  loadbalancer_id = azurerm_lb.lb.id
 }
 
 resource "azurerm_lb_probe" "http_probe" {
-  name                = "http-probe"
-  loadbalancer_id     = azurerm_lb.lb.id
-  protocol            = "Http"
-  port                = 80
-  request_path        = "/"
+  name            = "http-probe"
+  loadbalancer_id = azurerm_lb.lb.id
+  protocol        = "Http"
+  port            = 80
+  request_path    = "/"
 }
 
 resource "azurerm_lb_rule" "http_rule" {
@@ -117,7 +178,7 @@ resource "azurerm_network_interface_backend_address_pool_association" "lb_assoc"
 }
 
 # ---------------------------
-# Virtual Machines (from Packer image)
+# Virtual Machines
 # ---------------------------
 resource "azurerm_linux_virtual_machine" "vm" {
   count               = var.vm_count
