@@ -11,6 +11,7 @@ variable "resource_group_name" {
 variable "vm_count" {
   description = "Number of virtual machines"
   type        = number
+  default = 2
 }
 
 variable "packer_image_id" {
